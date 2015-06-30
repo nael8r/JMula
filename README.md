@@ -1,2 +1,2 @@
 # JMula
-A Discrete Event Simlutor for a fundry enterprise.
+A Discrete Event Simulator for a fundry enterprise.
