@@ -5,11 +5,17 @@ package jmula.simul.parameters;
  */
 public class clConst
 {
-	public static int const_identif_material = 10;
+	public static int IDENTIF_MATERIAL = 10;
 
-	public static int const_sem_cxt = 31;
+	public static int PROD_SEM_CXT = 31;
 
-	public static int const_maquina = 1;
+	public static int PROD_MAQUINA = 1;
 
-	public static int const_man= 8;
+	public static int PROD_MAN = 8;
+
+	public static int LIMP_ESP = 1080;
+
+	public static int ESMERIL = 10;
+
+	public static int ANALISE_VIS = 2;
 }

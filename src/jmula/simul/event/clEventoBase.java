@@ -9,6 +9,17 @@ public class clEventoBase extends EventObject implements Comparable<clEventoBase
 {
 	private enumTipoEvento tEvento;
 	private int tempoExec;
+	private Integer pecaID;
+
+	public Integer getPecaID()
+	{
+		return pecaID;
+	}
+
+	public void setPecaID(Integer pecaID)
+	{
+		this.pecaID = pecaID;
+	}
 
 	/**
 	 * Constructs a prototypical Event.
@@ -21,11 +32,12 @@ public class clEventoBase extends EventObject implements Comparable<clEventoBase
 		super(source);
 	}
 
-	public clEventoBase(Object source, int tempoExec, enumTipoEvento tEvento)
+	public clEventoBase(Object source, int tempoExec, enumTipoEvento tEvento, Integer pecaID)
 	{
 		super(source);
 		setTempoExec(tempoExec);
 		settEvento(tEvento);
+		setPecaID(pecaID);
 	}
 
 
@@ -57,5 +69,11 @@ public class clEventoBase extends EventObject implements Comparable<clEventoBase
 	public void settEvento(enumTipoEvento tEvento)
 	{
 		this.tEvento = tEvento;
+	}
+
+	@Override
+	public String toString()
+	{
+		return tEvento.name();
 	}
 }

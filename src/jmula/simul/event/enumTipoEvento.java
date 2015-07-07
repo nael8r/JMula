@@ -5,6 +5,8 @@ package jmula.simul.event;
  */
 public enum enumTipoEvento
 {
+	DUMMY(-1),
+
 	CHEGADA_PEDIDO(0),
 	// término do processo e expedição do pedido
 	TERM_PROC(1),
@@ -26,24 +28,38 @@ public enum enumTipoEvento
 	TERM_PREE_AREIA(10),
 	// Término da identificação do material
 	TERM_ID_MATERIAL(11),
+
+
+	TERM_ID_MATERIAL_CXT(28),
+	TERM_ID_MATERIAL_S_CXT(29),
+	TERM_ID_MATERIAL_MAQ(30),
+	TERM_ID_MATERIAL_MAN(31),
+
 	// Término da Resina
-	TERM_RESIN(12),
+	TERM_PROD_RESIN(12),
 	// Término da máquina
-	TERM_MAQ(13),
+	TERM_PROD_MAQ(13),
 	// Término do Manual
-	TERM_MAN(14),
+	TERM_PROD_MAN(14),
 	// Término com caixote
-	TERM_CXT(15),
+	TERM_PROD_CXT(15),
 	// Término sem caixote
-	TERM_S_CXT(16),
+	TERM_PROD_S_CXT(16),
 	// Término do chekout/limpeza e acabamento
-	TERM_LIMP_ACAB(17),
+	TERM_CHECKOUT_LIMP_ACAB(17),
+
+	TERM_CHECKOUT_LIMP_ACAB_RESIN(32),
 	// Término da limpeza da resina
 	TERM_LIMP_RESIN(18),
 	// Término do acabamento
 	TERM_ACAB(19),
 	// Término do esmeril
 	TERM_ESMER(20),
+
+	TERM_ESMER_MAQ(33),
+	TERM_ESMER_MAN(34),
+
+
 	// Término da rebarbação por máquina
 	TERM_REB_MAQU(21),
 	// Término da rebarbação manual
@@ -52,8 +68,11 @@ public enum enumTipoEvento
 	TERM_ANA_VIS(23),
 	// Término do serviço terceirizado
 	TERM_SERV_TER(24),
+
+	TERM_SERV_TER_PIN(35),
+
 	// Término da validação final
-	TERM_VALID_FIN(25),
+	//TERM_VALID_FIN(25),
 	// Término da pintura
 	TERM_PINT(26),
 	// Término da geração da documentação

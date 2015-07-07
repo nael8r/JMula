@@ -29,4 +29,12 @@ public class clTriParams
 	public static double cxt_max = 28;
 	public static double cxt_med = 24;
 
+	public static double rebarb_min = 3;
+	public static double rebarb_max = 10;
+	public static double rebarb_med = 5;
+
+	public static double terce_min = 3;
+	public static double terce_max = 10;
+	public static double terce_med = 5;
+
 }

@@ -14,4 +14,10 @@ public class clUnifParams
 	public static int checkout_unif_min = 2;
 	public static int checkout_unif_max = 2;
 
+	public static int rebarb_maq_unif_min = 1;
+	public static int rebarb_maq_unif_max = 3;
+
+	public static int doc_unif_min = 1;
+	public static int doc_unif_max = 3;
+
 }
