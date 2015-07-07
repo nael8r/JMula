@@ -13,9 +13,9 @@ public class clTriParams
 	public static double quimic_mater_max = 180;
 	public static double quimic_mater_med = 30;
 
-	public static double cri_model_min = 3;
-	public static double cri_model_max = 8;
-	public static double cri_model_med = 5;
+	public static double cri_model_min = 480 ;
+	public static double cri_model_max = 7200;
+	public static double cri_model_med = 4320;
 
 	public static double rastr_min = 2;
 	public static double rastr_max = 180;
@@ -33,8 +33,8 @@ public class clTriParams
 	public static double rebarb_max = 10;
 	public static double rebarb_med = 5;
 
-	public static double terce_min = 3;
-	public static double terce_max = 10;
-	public static double terce_med = 5;
+	public static double terce_min = 4320;
+	public static double terce_max = 10080;
+	public static double terce_med = 5760;
 
 }

@@ -25,6 +25,7 @@ public class clSimul
 {
 	// TODO instanciar as distribuições fora do laço
 	private int tmpTAtividade;
+	private int tmpTFila;
 	private int atualID;
 	private int clock;
 	// ID das entidades de pedidos
@@ -89,7 +90,8 @@ public class clSimul
 	// Métodos principais da simulação
 	public void init(long seed)
 	{
-		tmpTAtividade=0;
+		tmpTAtividade = 0;
+		tmpTFila = 0;
 		ID = 0;
 		clock = 0;
 
@@ -184,890 +186,845 @@ public class clSimul
 
 	private void term_ChegPedExec_ProcExp(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgProc.isEmpty()  && assistSetorCompra != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgProc.isEmpty() && assistSetorCompra != 0; i++)
+		{
 
-				atualID = filaAgProc.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgProc += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgProc.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgProc += tmpTFila;
 
-				assistSetorCompra--;
+			assistSetorCompra--;
 
-				tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.proc_exp_min,clTriParams.proc_exp_med,  clTriParams.proc_exp_max ));
-				clEventoBase newEv = new clEventoBase(ev,
-						tmpTAtividade,
-						enumTipoEvento.TERM_PROC,
-						atualID);
+			tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.proc_exp_min, clTriParams.proc_exp_med, clTriParams.proc_exp_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_PROC,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				//if (filaAgAnalis.isEmpty() && funcSetorExpedicao != 0)
-				//{
-					//term_ProcExpExec_QuimicVerifMatEx(newEv);
-				//}
-				//else
-				//{
-					filaAgAnalis.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock+tmpTAtividade);
-				//}
-			}
+			filaAgAnalis.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_ProcExpExec_QuimicVerifMatEx(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgAnalis.isEmpty() && funcSetorExpedicao != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgAnalis.isEmpty() && funcSetorExpedicao != 0; i++)
+		{
 
-				atualID = filaAgAnalis.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgAnalis += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgAnalis.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgAnalis += tmpTFila;
 
-				funcSetorExpedicao--;
+			funcSetorExpedicao--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new TriangularDistribution(rand, clTriParams.quimic_mater_min, clTriParams.quimic_mater_med, clTriParams.quimic_mater_max)),
-						enumTipoEvento.TERM_QUIMIC_VERIFI_MAT_EX,
-						atualID);
+			tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.quimic_mater_min, clTriParams.quimic_mater_med, clTriParams.quimic_mater_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_QUIMIC_VERIFI_MAT_EX,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgVerifDataMater.isEmpty() && funcSetorExpedicao != 0)
-				{
-					term_QuimicVerifMatExExec_VerifDatMatPrim(newEv);
-				}
-				else
-				{
-					filaAgVerifDataMater.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgVerifDataMater.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 
 	}
 
 	// Verificar datas, matéria primas
 	private void term_QuimicVerifMatExExec_VerifDatMatPrim(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgVerifDataMater.isEmpty() && funcSetorExpedicao != 0; i++)
-			{
-				atualID = filaAgVerifDataMater.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgVerifDataMater += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+		for (int i = 0; i < 2 && !filaAgVerifDataMater.isEmpty() && funcSetorExpedicao != 0; i++)
+		{
+			atualID = filaAgVerifDataMater.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgVerifDataMater += tmpTFila;
 
-				funcSetorExpedicao--;
+			funcSetorExpedicao--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.verif_data_mater_unif_min, clUnifParams.verif_data_mater_unif_max)),
-						enumTipoEvento.TERM_VERIF_DATAS_MAT_PRIM,
-						atualID);
+			tmpTAtividade = tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.verif_data_mater_unif_min, clUnifParams.verif_data_mater_unif_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_VERIF_DATAS_MAT_PRIM,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgPlanejamento.isEmpty() && funcSetorExpedicao != 0)
-				{
-					term_VerifDatMatPrimExec_PlanProcProd(newEv);
-				}
-				else
-				{
-					filaAgPlanejamento.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgPlanejamento.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	// estudo, planejamento dos processos de produção
 	private void term_VerifDatMatPrimExec_PlanProcProd(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgPlanejamento.isEmpty() && funcSetorExpedicao != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgPlanejamento.isEmpty() && funcSetorExpedicao != 0; i++)
+		{
 
-				atualID = filaAgPlanejamento.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgPlanejamento += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgPlanejamento.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgPlanejamento += tmpTFila;
 
-				funcSetorExpedicao--;
+			funcSetorExpedicao--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new NormalDistribution(rand, clNormParams.plan_proc_prod_media, clNormParams.plan_proc_prod_sd)),
-						enumTipoEvento.TERM_PLAN_PROC_PROD,
-						atualID);
+			tmpTAtividade = tFinalEvento(new NormalDistribution(rand, clNormParams.plan_proc_prod_media, clNormParams.plan_proc_prod_sd));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_PLAN_PROC_PROD,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgVerificacao.isEmpty() && funcSetorModel != 0)
-				{
-					term_PlanProcProdExec_VerifArqModDepot(newEv);
-				}
-				else
-				{
-					filaAgVerificacao.add(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgVerificacao.add(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	// término da verificação de arquivos de modelagem no depósito
 	private void term_PlanProcProdExec_VerifArqModDepot(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgVerificacao.isEmpty() && funcSetorModel != 0; i++)
+		for (int i = 0; i < 2 && !filaAgVerificacao.isEmpty() && funcSetorModel != 0; i++)
+		{
+			double prob = rand.nextDouble();
+			atualID = filaAgVerificacao.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgVerificacao += tmpTFila;
+
+			funcSetorModel--;
+
+
+			if (prob <= 0.3)
 			{
-				double prob = rand.nextDouble();
-				atualID = filaAgVerificacao.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgVerificacao += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
 
-				funcSetorModel--;
-
+				tmpTAtividade = tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.verif_arq_depo_unif_min, clUnifParams.verif_arq_depo_unif_max));
 				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.verif_arq_depo_unif_min, clUnifParams.verif_arq_depo_unif_max)),
-						enumTipoEvento.TERM_VERIF_ARQ_MOD_DEPOT,
+						tmpTAtividade,
+						enumTipoEvento.TERM_VERIF_ARQ_MOD_DEPOT_CRIA,
 						atualID);
 
 				fel.add(newEv);
 
-				if (prob <= 0.3)
-				{
-					if (filaAgMoldPronto.isEmpty() && funcSetorModel != 0)
-					{
-						term_VerifArqModDepot_Exec_CriaMod(newEv);
-					}
-					else
-					{
-						filaAgMoldPronto.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-					}
+				filaAgMoldPronto.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() + tmpTAtividade);
 
-				}
-				else
-				{
-					if (filaAgRastr.isEmpty() && funcSetorModel != 0)
-					{
-						term_CriaMod_Exec_Rastr(newEv);
-					}
-					else
-					{
-						filaAgRastr.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-					}
-
-				}
 			}
+			else
+			{
+
+				tmpTAtividade = tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.verif_arq_depo_unif_min, clUnifParams.verif_arq_depo_unif_max));
+				clEventoBase newEv = new clEventoBase(ev,
+						tmpTAtividade,
+						enumTipoEvento.TERM_VERIF_ARQ_MOD_DEPOT_RASTR,
+						atualID);
+
+				fel.add(newEv);
+
+				filaAgRastr.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+						tmpTAtividade +
+						tmpTFila);
+
+			}
+		}
 	}
 
 	// término da criação do modelo
 	private void term_VerifArqModDepot_Exec_CriaMod(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgMoldPronto.isEmpty() && funcSetorModel != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgMoldPronto.isEmpty() && funcSetorModel != 0; i++)
+		{
 
 
-				atualID = filaAgMoldPronto.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgMoldPronto += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgMoldPronto.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgMoldPronto += tmpTFila;
 
-				funcSetorModel--;
+			funcSetorModel--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new TriangularDistribution(rand, clTriParams.cri_model_min, clTriParams.cri_model_med, clTriParams.cri_model_max)),
-						enumTipoEvento.TERM_CRIA_MOD,
-						atualID);
+			tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.cri_model_min, clTriParams.cri_model_med, clTriParams.cri_model_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_CRIA_MOD,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgRastr.isEmpty() && funcSetorModel != 0)
-				{
-					term_CriaMod_Exec_Rastr(newEv);
-				}
-				else
-				{
-					filaAgRastr.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgRastr.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	// ratreabilidade, histórico do material
 	private void term_CriaMod_Exec_Rastr(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgRastr.isEmpty() && funcSetorModel != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgRastr.isEmpty() && funcSetorModel != 0; i++)
+		{
 
 
-				atualID = filaAgRastr.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgRastr += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgRastr.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgRastr += tmpTFila;
 
-				funcSetorModel--;
+			funcSetorModel--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new TriangularDistribution(rand, clTriParams.rastr_min, clTriParams.rastr_med, clTriParams.rastr_max)),
-						enumTipoEvento.TERM_RASTR,
-						atualID);
+			tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.rastr_min, clTriParams.rastr_med, clTriParams.rastr_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_RASTR,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgColeta.isEmpty() && funcSetorModel != 0)
-				{
-					term_Rastr_Exec_Info_Peca(newEv);
-				}
-				else
-				{
-					filaAgColeta.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgColeta.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_Rastr_Exec_Info_Peca(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgColeta.isEmpty() && funcSetorModel != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgColeta.isEmpty() && funcSetorModel != 0; i++)
+		{
 
 
-				atualID = filaAgColeta.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgColeta += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgColeta.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgColeta += tmpTFila;
 
-				funcSetorModel--;
+			funcSetorModel--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new TriangularDistribution(rand, clTriParams.peca_info_min, clTriParams.peca_info_med, clTriParams.peca_info_max)),
-						enumTipoEvento.TERM_INFO_PECA,
-						atualID);
+			tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.peca_info_min, clTriParams.peca_info_med, clTriParams.peca_info_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_INFO_PECA,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgPreeAreia.isEmpty() && funcSetorProducao != 0)
-				{
-					term_InfoPeca_Exec_Pree_Areia(newEv);
-				}
-				else
-				{
-					filaAgPreeAreia.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
 
-			}
+			filaAgPreeAreia.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+
+		}
 	}
 
 	private void term_InfoPeca_Exec_Pree_Areia(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgPreeAreia.isEmpty() && funcSetorProducao != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgPreeAreia.isEmpty() && funcSetorProducao != 0; i++)
+		{
 
 
-				atualID = filaAgPreeAreia.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgPreeAreia += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgPreeAreia.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgPreeAreia += tmpTFila;
 
-				funcSetorProducao--;
+			funcSetorProducao--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new NormalDistribution(rand, clNormParams.pree_areia_media, clNormParams.pree_areia_sd)),
-						enumTipoEvento.TERM_PREE_AREIA,
-						atualID);
+			tmpTAtividade = tFinalEvento(new NormalDistribution(rand, clNormParams.pree_areia_media, clNormParams.pree_areia_sd));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_PREE_AREIA,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgIdentif.isEmpty() && funcSetorProducao != 0)
-				{
-					term_Pree_Areia_Exec_IdMaterial(newEv);
-				}
-				else
-				{
-					filaAgIdentif.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgIdentif.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_Pree_Areia_Exec_IdMaterial(clEventoBase ev)
 	{
-			double prob;
+		double prob;
 
-			for (int i = 0; i < 2 && !filaAgIdentif.isEmpty() && funcSetorProducao != 0; i++)
+		for (int i = 0; i < 2 && !filaAgIdentif.isEmpty() && funcSetorProducao != 0; i++)
+		{
+
+			prob = rand.nextDouble();
+			atualID = filaAgIdentif.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgIdentif += tmpTFila;
+
+			funcSetorProducao--;
+
+			// resina
+			if (prob < 0.3)
 			{
-
-				prob = rand.nextDouble();
-				atualID = filaAgIdentif.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgIdentif += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
-
-				funcSetorProducao--;
-
-				// resina
-				if (prob < 0.3)
+				if (prob < 0.1)
 				{
-					if (prob < 0.1)
-					{
-						clEventoBase newEv = new clEventoBase(ev,
-								tFinalEvento(clConst.IDENTIF_MATERIAL),
-								enumTipoEvento.TERM_ID_MATERIAL_CXT,
-								atualID);
-
-						fel.add(newEv);
-
-						if (filaAgCaixote.isEmpty() && funcSetorProducao != 0)
-						{
-							term_IdMaterial_Exec_ProdCxt(newEv);
-						}
-						else
-						{
-							filaAgCaixote.addLast(atualID);
-							atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-						}
-					}
-					else
-					{
-						clEventoBase newEv = new clEventoBase(ev,
-								tFinalEvento(clConst.IDENTIF_MATERIAL),
-								enumTipoEvento.TERM_ID_MATERIAL_S_CXT,
-								atualID);
-
-						fel.add(newEv);
-
-						if (filaAgSCaixote.isEmpty() && funcSetorProducao != 0)
-						{
-							term_IdMaterial_Exec_ProdSCxt(newEv);
-						}
-						else
-						{
-							filaAgSCaixote.addLast(atualID);
-							atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-						}
-					}
-				}
-				// máquina
-				else if (prob >= 0.3 && prob < 0.6)
-				{
+					tmpTAtividade = tFinalEvento(clConst.IDENTIF_MATERIAL);
 					clEventoBase newEv = new clEventoBase(ev,
-							tFinalEvento(clConst.IDENTIF_MATERIAL),
-							enumTipoEvento.TERM_ID_MATERIAL_MAQ,
+							tmpTAtividade,
+							enumTipoEvento.TERM_ID_MATERIAL_CXT,
 							atualID);
 
 					fel.add(newEv);
 
-					if (filaAgMaquina.isEmpty() && funcSetorProducao != 0)
-					{
-						term_IdMaterial_Exec_ProdMaq(newEv);
-					}
-					else
-					{
-						filaAgMaquina.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-					}
+
+					filaAgCaixote.addLast(atualID);
+					atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() + tmpTAtividade);
 				}
-				// manual
 				else
 				{
-
+					tmpTAtividade = tFinalEvento(clConst.IDENTIF_MATERIAL);
 					clEventoBase newEv = new clEventoBase(ev,
-							tFinalEvento(clConst.IDENTIF_MATERIAL),
-							enumTipoEvento.TERM_ID_MATERIAL_MAN,
+							tmpTAtividade,
+							enumTipoEvento.TERM_ID_MATERIAL_S_CXT,
 							atualID);
 
 					fel.add(newEv);
 
-					if (filaAgManual.isEmpty() && funcProdManual != 0)
-					{
-						term_IdMaterial_Exec_ProdMan(newEv);
-					}
-					else
-					{
-						filaAgManual.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-					}
 
+					filaAgSCaixote.addLast(atualID);
+					atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+							tmpTAtividade +
+							tmpTFila);
 				}
 			}
+			// máquina
+			else if (prob >= 0.3 && prob < 0.6)
+			{
+				tmpTAtividade = tFinalEvento(clConst.IDENTIF_MATERIAL);
+				clEventoBase newEv = new clEventoBase(ev,
+						tmpTAtividade,
+						enumTipoEvento.TERM_ID_MATERIAL_MAQ,
+						atualID);
+
+				fel.add(newEv);
+
+
+				filaAgMaquina.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+						tmpTAtividade +
+						tmpTFila);
+			}
+			// manual
+			else
+			{
+				tmpTAtividade = tFinalEvento(clConst.IDENTIF_MATERIAL);
+				clEventoBase newEv = new clEventoBase(ev,
+						tmpTAtividade,
+						enumTipoEvento.TERM_ID_MATERIAL_MAN,
+						atualID);
+
+				fel.add(newEv);
+
+
+				filaAgManual.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+						tmpTAtividade +
+						tmpTFila);
+
+			}
+		}
 	}
 
 	private void term_IdMaterial_Exec_ProdCxt(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgCaixote.isEmpty() && funcSetorProducao != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgCaixote.isEmpty() && funcSetorProducao != 0; i++)
+		{
 
 
-				atualID = filaAgCaixote.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgCaixote += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgCaixote.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgCaixote += tmpTFila;
 
-				funcSetorProducao--;
+			funcSetorProducao--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new TriangularDistribution(rand, clTriParams.cxt_min, clTriParams.cxt_med, clTriParams.cxt_max)),
-						enumTipoEvento.TERM_PROD_CXT,
-						atualID);
+			tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.cxt_min, clTriParams.cxt_med, clTriParams.cxt_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_PROD_CXT,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgCheckoutLimpAcab.isEmpty() && funcSetorFinal != 0)
-				{
-					term_Prod_Exec_Checkout(newEv);
-				}
-				else
-				{
-					filaAgCheckoutLimpAcab.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
 
-			}
+			filaAgCheckoutLimpAcab.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+
+		}
 	}
 
 	private void term_IdMaterial_Exec_ProdSCxt(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgSCaixote.isEmpty() && funcSetorProducao != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgSCaixote.isEmpty() && funcSetorProducao != 0; i++)
+		{
 
 
-				atualID = filaAgSCaixote.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgSCaixote += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgSCaixote.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgSCaixote += tmpTFila;
 
-				funcSetorProducao--;
+			funcSetorProducao--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(clConst.PROD_SEM_CXT),
-						enumTipoEvento.TERM_PROD_S_CXT,
-						atualID);
+			tmpTAtividade = tFinalEvento(clConst.PROD_SEM_CXT);
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_PROD_S_CXT,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgCheckoutLimpAcab.isEmpty() && funcSetorFinal != 0)
-				{
-					term_Prod_Exec_Checkout(newEv);
-				}
-				else
-				{
-					filaAgCheckoutLimpAcab.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgCheckoutLimpAcab.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_IdMaterial_Exec_ProdMaq(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgMaquina.isEmpty() && funcSetorProducao != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgMaquina.isEmpty() && funcSetorProducao != 0; i++)
+		{
 
 
-				atualID = filaAgMaquina.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgMaquina += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgMaquina.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgMaquina += tmpTFila;
 
-				funcSetorProducao--;
+			funcSetorProducao--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(clConst.PROD_MAQUINA),
-						enumTipoEvento.TERM_PROD_MAQ,
-						atualID);
+			tmpTAtividade = tFinalEvento(clConst.PROD_MAQUINA);
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_PROD_MAQ,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgCheckoutLimpAcab.isEmpty() && funcSetorFinal != 0)
-				{
-					term_Prod_Exec_Checkout(newEv);
-				}
-				else
-				{
-					filaAgCheckoutLimpAcab.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgCheckoutLimpAcab.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_IdMaterial_Exec_ProdMan(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgManual.isEmpty() && funcProdManual != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgManual.isEmpty() && funcProdManual != 0; i++)
+		{
 
 
-				atualID = filaAgManual.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgManual += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgManual.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgManual += tmpTFila;
 
-				funcProdManual--;
+			funcProdManual--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(clConst.PROD_MAN),
-						enumTipoEvento.TERM_PROD_MAN,
-						atualID);
+			tmpTAtividade = tFinalEvento(clConst.PROD_MAN);
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_PROD_MAN,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgCheckoutLimpAcab.isEmpty() && funcSetorFinal != 0)
-				{
-					term_Prod_Exec_Checkout(newEv);
-				}
-				else
-				{
-					filaAgCheckoutLimpAcab.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgCheckoutLimpAcab.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_Prod_Exec_Checkout(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgCheckoutLimpAcab.isEmpty() && funcSetorFinal != 0; i++)
+		for (int i = 0; i < 2 && !filaAgCheckoutLimpAcab.isEmpty() && funcSetorFinal != 0; i++)
+		{
+
+
+			atualID = filaAgCheckoutLimpAcab.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgCheckoutLimpAcab += tmpTFila;
+
+			funcSetorFinal--;
+
+			// se tem resina ou não
+			if (ev.gettEvento() == enumTipoEvento.TERM_PROD_CXT || ev.gettEvento() == enumTipoEvento.TERM_PROD_S_CXT)
 			{
+				tmpTAtividade = tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.checkout_unif_min, clUnifParams.checkout_unif_max));
+				clEventoBase newEv = new clEventoBase(ev,
+						tmpTAtividade,
+						enumTipoEvento.TERM_CHECKOUT_LIMP_ACAB_RESIN,
+						atualID);
+
+				fel.add(newEv);
 
 
-				atualID = filaAgCheckoutLimpAcab.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgCheckoutLimpAcab += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+				filaAgLimpEsp.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+						tmpTAtividade +
+						tmpTFila);
 
-				funcSetorFinal--;
-
-				// se tem resina ou não
-				if (ev.gettEvento() == enumTipoEvento.TERM_PROD_CXT || ev.gettEvento() == enumTipoEvento.TERM_PROD_S_CXT)
-				{
-					clEventoBase newEv = new clEventoBase(ev,
-							tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.checkout_unif_min, clUnifParams.checkout_unif_max)),
-							enumTipoEvento.TERM_CHECKOUT_LIMP_ACAB_RESIN,
-							atualID);
-
-					fel.add(newEv);
-
-					if (filaAgLimpEsp.isEmpty() && funcCheckoutResina != 0)
-					{
-						term_Checkout_Exec_LimpEsp(newEv);
-					}
-					else
-					{
-						filaAgLimpEsp.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-					}
-
-				}
-				else
-				{
-					clEventoBase newEv = new clEventoBase(ev,
-							tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.checkout_unif_min, clUnifParams.checkout_unif_max)),
-							enumTipoEvento.TERM_CHECKOUT_LIMP_ACAB,
-							atualID);
-
-					fel.add(newEv);
-
-					if (filaAgAcabamento.isEmpty() && funcSetorFinal != 0)
-					{
-						term_CheckoutLimpEsp_Exec_Acab(newEv);
-					}
-					else
-					{
-						filaAgAcabamento.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-					}
-				}
 			}
+			else
+			{
+				tmpTAtividade = tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.checkout_unif_min, clUnifParams.checkout_unif_max));
+				clEventoBase newEv = new clEventoBase(ev,
+						tmpTAtividade,
+						enumTipoEvento.TERM_CHECKOUT_LIMP_ACAB,
+						atualID);
+
+				fel.add(newEv);
+
+
+				filaAgAcabamento.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+						tmpTAtividade +
+						tmpTFila);
+			}
+		}
 	}
 
 	private void term_Checkout_Exec_LimpEsp(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgLimpEsp.isEmpty() && funcCheckoutResina != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgLimpEsp.isEmpty() && funcCheckoutResina != 0; i++)
+		{
 
 
-				atualID = filaAgLimpEsp.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgLimpEsp += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgLimpEsp.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgLimpEsp += tmpTFila;
 
-				funcCheckoutResina--;
+			funcCheckoutResina--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(clConst.LIMP_ESP),
-						enumTipoEvento.TERM_LIMP_RESIN,
-						atualID);
+			tmpTAtividade = tFinalEvento(clConst.LIMP_ESP);
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_LIMP_RESIN,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgAcabamento.isEmpty() && funcSetorFinal != 0)
-				{
-					term_CheckoutLimpEsp_Exec_Acab(newEv);
-				}
-				else
-				{
-					filaAgAcabamento.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
 
-			}
+			filaAgAcabamento.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+
+		}
 	}
 
 	private void term_CheckoutLimpEsp_Exec_Acab(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgAcabamento.isEmpty() && funcSetorFinal != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgAcabamento.isEmpty() && funcSetorFinal != 0; i++)
+		{
 
 
-				atualID = filaAgAcabamento.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgAcabamento += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgAcabamento.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgAcabamento += tmpTFila;
 
-				funcSetorFinal--;
+			funcSetorFinal--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new NormalDistribution(rand, clNormParams.acabamento_media, clNormParams.acabamento_sd)),
-						enumTipoEvento.TERM_ACAB,
-						atualID);
+			tmpTAtividade = tFinalEvento(new NormalDistribution(rand, clNormParams.acabamento_media, clNormParams.acabamento_sd));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_ACAB,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgEsmeril.isEmpty() && funcSetorFinal != 0)
-				{
-					term_Acab_Exec_Esmeril(newEv);
-				}
-				else
-				{
-					filaAgEsmeril.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgEsmeril.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_Acab_Exec_Esmeril(clEventoBase ev)
 	{
-			double prob;
+		double prob;
 
-			for (int i = 0; i < 2 && !filaAgEsmeril.isEmpty() && funcSetorFinal != 0; i++)
+		for (int i = 0; i < 2 && !filaAgEsmeril.isEmpty() && funcSetorFinal != 0; i++)
+		{
+
+			prob = rand.nextDouble();
+			atualID = filaAgEsmeril.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgEsmeril += tmpTFila;
+
+			funcSetorFinal--;
+
+			if (prob < 0.4)
 			{
+				tmpTAtividade = tFinalEvento(clConst.ESMERIL);
+				clEventoBase newEv = new clEventoBase(ev,
+						tmpTAtividade,
+						enumTipoEvento.TERM_ESMER_MAQ,
+						atualID);
 
-				prob = rand.nextDouble();
-				atualID = filaAgEsmeril.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgEsmeril += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
-
-				funcSetorFinal--;
-
-				if (prob < 0.4)
-				{
-					clEventoBase newEv = new clEventoBase(ev,
-							tFinalEvento(clConst.ESMERIL),
-							enumTipoEvento.TERM_ESMER_MAQ,
-							atualID);
-
-					fel.add(newEv);
-
-					if (filaAgRebarbMaq.isEmpty() && funcSetorFinal != 0)
-						term_Esmeril_Exec_RebarbMaq(newEv);
-					else
-					{
-						filaAgRebarbMaq.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-					}
-
-				}
-				else
-				{
-					clEventoBase newEv = new clEventoBase(ev,
-							tFinalEvento(clConst.ESMERIL),
-							enumTipoEvento.TERM_ESMER_MAN,
-							atualID);
-
-					fel.add(newEv);
-
-					if (filaAgRebarbMan.isEmpty() && funcSetorFinal != 0)
-						term_Esmeril_Exec_RebarbMan(newEv);
-					else
-					{
-						filaAgRebarbMan.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-
-					}
+				fel.add(newEv);
 
 
-				}
+				filaAgRebarbMaq.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+						tmpTAtividade +
+						tmpTFila);
+
 			}
+			else
+			{
+				tmpTAtividade = tFinalEvento(clConst.ESMERIL);
+				clEventoBase newEv = new clEventoBase(ev,
+						tmpTAtividade,
+						enumTipoEvento.TERM_ESMER_MAN,
+						atualID);
+
+				fel.add(newEv);
+
+
+				filaAgRebarbMan.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+						tmpTAtividade +
+						tmpTFila);
+
+
+			}
+		}
 	}
 
 	private void term_Esmeril_Exec_RebarbMaq(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgRebarbMaq.isEmpty() && funcSetorFinal != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgRebarbMaq.isEmpty() && funcSetorFinal != 0; i++)
+		{
 
 
-				atualID = filaAgRebarbMaq.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgRebarb += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgRebarbMaq.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgRebarb += tmpTFila;
 
-				funcSetorFinal--;
+			funcSetorFinal--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.rebarb_maq_unif_min, clUnifParams.rebarb_maq_unif_max)),
-						enumTipoEvento.TERM_REB_MAQU,
-						atualID);
+			tmpTAtividade = tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.rebarb_maq_unif_min, clUnifParams.rebarb_maq_unif_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_REB_MAQU,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgAnalisVisual.isEmpty() && funcSetorQualidade != 0)
-					term_Rebarb_Exec_AnalisVisual(newEv);
-				else
-				{
-					filaAgAnalisVisual.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgAnalisVisual.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_Esmeril_Exec_RebarbMan(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgRebarbMan.isEmpty() && funcSetorFinal != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgRebarbMan.isEmpty() && funcSetorFinal != 0; i++)
+		{
 
 
-				atualID = filaAgRebarbMan.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgRebarbMan += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgRebarbMan.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgRebarbMan += tmpTFila;
 
-				funcSetorFinal--;
+			funcSetorFinal--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new TriangularDistribution(rand, clTriParams.rebarb_min, clTriParams.rebarb_med, clTriParams.rebarb_max)),
-						enumTipoEvento.TERM_REB_MAN,
-						atualID);
+			tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.rebarb_min, clTriParams.rebarb_med, clTriParams.rebarb_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_REB_MAN,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgAnalisVisual.isEmpty() && funcSetorQualidade != 0)
-					term_Rebarb_Exec_AnalisVisual(newEv);
-				else
-				{
-					filaAgAnalisVisual.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgAnalisVisual.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_Rebarb_Exec_AnalisVisual(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgAnalisVisual.isEmpty() && funcSetorQualidade != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgAnalisVisual.isEmpty() && funcSetorQualidade != 0; i++)
+		{
 
 
-				atualID = filaAgAnalisVisual.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgAnalisVisual += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgAnalisVisual.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgAnalisVisual += tmpTFila;
 
-				funcSetorQualidade--;
+			funcSetorQualidade--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(clConst.ANALISE_VIS),
-						enumTipoEvento.TERM_ANA_VIS,
-						atualID);
+			tmpTAtividade = tFinalEvento(clConst.ANALISE_VIS);
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_ANA_VIS,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgTerceir.isEmpty())
-					term_AnalisVisual_Exec_ServTer(newEv);
-				else
-				{
-					filaAgTerceir.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgTerceir.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_AnalisVisual_Exec_ServTer(clEventoBase ev)
 	{
-			double prob;
+		double prob;
 
-			for (int i = 0; i < 2 && !filaAgTerceir.isEmpty(); i++)
+		for (int i = 0; i < 2 && !filaAgTerceir.isEmpty(); i++)
+		{
+
+			prob = rand.nextDouble();
+			atualID = filaAgTerceir.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgTerceir += tmpTFila;
+
+			if (prob < 0.9)
+			{
+				tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.terce_min, clTriParams.terce_med, clTriParams.terce_max));
+				clEventoBase newEv = new clEventoBase(ev,
+						tmpTAtividade,
+						enumTipoEvento.TERM_SERV_TER_PIN,
+						atualID);
+
+				fel.add(newEv);
+
+
+				filaAgPint.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+						tmpTAtividade +
+						tmpTFila);
+
+			}
+			else
 			{
 
-				prob = rand.nextDouble();
-				atualID = filaAgTerceir.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgTerceir += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+				tmpTAtividade = tFinalEvento(new TriangularDistribution(rand, clTriParams.terce_min, clTriParams.terce_med, clTriParams.terce_max));
+				clEventoBase newEv = new clEventoBase(ev,
+						tmpTAtividade,
+						enumTipoEvento.TERM_SERV_TER,
+						atualID);
 
-				if (prob < 0.9)
-				{
-					clEventoBase newEv = new clEventoBase(ev,
-							tFinalEvento(new TriangularDistribution(rand, clTriParams.terce_min, clTriParams.terce_med, clTriParams.terce_max)),
-							enumTipoEvento.TERM_SERV_TER_PIN,
-							atualID);
+				fel.add(newEv);
 
-					fel.add(newEv);
 
-					if (filaAgPint.isEmpty() && funcSetorContProd != 0)
-						term_ServTer_Exec_Pint(newEv);
-					else
-					{
-						filaAgPint.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-					}
+				filaAgDoc.addLast(atualID);
+				atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+						tmpTAtividade +
+						tmpTFila);
 
-				}
-				else
-				{
-
-					clEventoBase newEv = new clEventoBase(ev,
-							tFinalEvento(new TriangularDistribution(rand, clTriParams.terce_min, clTriParams.terce_med, clTriParams.terce_max)),
-							enumTipoEvento.TERM_SERV_TER,
-							atualID);
-
-					fel.add(newEv);
-
-					if (filaAgDoc.isEmpty() && funcSetorDoc != 0)
-						term_Pint_Exec_GerDoc(newEv);
-					else
-					{
-						filaAgDoc.addLast(atualID);
-						atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-					}
-
-				}
 			}
+		}
 	}
 
 	private void term_ServTer_Exec_Pint(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgPint.isEmpty() && funcSetorContProd != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgPint.isEmpty() && funcSetorContProd != 0; i++)
+		{
 
 
-				atualID = filaAgPint.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgPint += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgPint.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgPint += tmpTFila;
 
-				funcSetorContProd--;
+			funcSetorContProd--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new NormalDistribution(rand, clNormParams.pintura_media, clNormParams.pintura_sd)),
-						enumTipoEvento.TERM_PINT,
-						atualID);
+			tmpTAtividade = tFinalEvento(new NormalDistribution(rand, clNormParams.pintura_media, clNormParams.pintura_sd));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_PINT,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				if (filaAgDoc.isEmpty() && funcSetorDoc != 0)
-					term_Pint_Exec_GerDoc(newEv);
-				else
-				{
-					filaAgDoc.addLast(atualID);
-					atividadesCriadas.get(atualID).setMarcaTempoEntrada(clock);
-				}
-			}
+
+			filaAgDoc.addLast(atualID);
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+		}
 	}
 
 	private void term_Pint_Exec_GerDoc(clEventoBase ev)
 	{
-			for (int i = 0; i < 2 && !filaAgDoc.isEmpty() && funcSetorDoc != 0; i++)
-			{
+		for (int i = 0; i < 2 && !filaAgDoc.isEmpty() && funcSetorDoc != 0; i++)
+		{
 
 
-				atualID = filaAgDoc.removeFirst();
-				clock += ev.getTempoExec();
-				totTempoEspfilaAgDoc += clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			atualID = filaAgDoc.removeFirst();
+			clock += ev.getTempoExec() - clock;
+			tmpTFila = clock - atividadesCriadas.get(atualID).getMarcaTempoEntrada();
+			totTempoEspfilaAgDoc += tmpTFila;
 
-				funcSetorDoc--;
+			funcSetorDoc--;
 
-				clEventoBase newEv = new clEventoBase(ev,
-						tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.doc_unif_min, clUnifParams.doc_unif_max)),
-						enumTipoEvento.TERM_GER_DOC,
-						atualID);
+			tmpTAtividade = tFinalEvento(new UniformIntegerDistribution(rand, clUnifParams.doc_unif_min, clUnifParams.doc_unif_max));
+			clEventoBase newEv = new clEventoBase(ev,
+					tmpTAtividade,
+					enumTipoEvento.TERM_GER_DOC,
+					atualID);
 
-				fel.add(newEv);
+			fel.add(newEv);
 
-				limbo.addLast(atualID);
-			}
+			atividadesCriadas.get(atualID).setMarcaTempoEntrada(atividadesCriadas.get(atualID).getMarcaTempoEntrada() +
+					tmpTAtividade +
+					tmpTFila);
+
+			limbo.addLast(atualID);
+		}
 	}
 
 	// ALT+INSERT
@@ -1075,7 +1032,8 @@ public class clSimul
 
 	public void simul(int qtdPecas, int minToRun, long seed)
 	{
-		int opt=-1;
+		int tamAntigo = -1;
+		int opt = -1;
 		clEventoBase ev;
 
 		init(seed);
@@ -1084,9 +1042,12 @@ public class clSimul
 
 		// inc CLOCK
 		// TODO mudar semente a cada replicação
-		while (clock<=minToRun)
+		while (clock <= minToRun && !fel.isEmpty())
 		{
+
 			ev = fel.poll();
+
+			tamAntigo = fel.size();
 
 			// tratar aqui a liberação dos funcionários
 			// TODO verificar quando liberar os recursos
@@ -1114,10 +1075,16 @@ public class clSimul
 					term_PlanProcProdExec_VerifArqModDepot(ev);
 					break;
 
-				case TERM_VERIF_ARQ_MOD_DEPOT:
+				case TERM_VERIF_ARQ_MOD_DEPOT_CRIA:
 					funcSetorModel++;
 					term_VerifArqModDepot_Exec_CriaMod(ev);
 					break;
+
+				case TERM_VERIF_ARQ_MOD_DEPOT_RASTR:
+					funcSetorModel++;
+					term_CriaMod_Exec_Rastr(ev);
+					break;
+
 
 				case TERM_CRIA_MOD:
 					funcSetorModel++;
@@ -1226,9 +1193,16 @@ public class clSimul
 
 				case TERM_GER_DOC:
 					funcSetorDoc++;
-					nascedouro(qtdPecas);
+					//nascedouro(qtdPecas);
+					break;
+				default:
+					fel.add(ev);
 					break;
 			}
+
 		}
+
+		System.out.println("Número de peças atendidas: " + limbo.size());
+		System.out.println("Clock: " + clock);
 	}
 }

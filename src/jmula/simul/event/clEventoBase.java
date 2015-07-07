@@ -74,6 +74,6 @@ public class clEventoBase extends EventObject implements Comparable<clEventoBase
 	@Override
 	public String toString()
 	{
-		return tEvento.name();
+		return "evento: "+tEvento.name()+" ID-peça: "+pecaID+" time: "+tempoExec;
 	}
 }

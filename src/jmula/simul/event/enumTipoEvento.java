@@ -18,6 +18,10 @@ public enum enumTipoEvento
 	TERM_PLAN_PROC_PROD(5),
 	// Término da verificação dos arquivos de modelagem no deposito
 	TERM_VERIF_ARQ_MOD_DEPOT(6),
+
+	TERM_VERIF_ARQ_MOD_DEPOT_CRIA(36),
+	TERM_VERIF_ARQ_MOD_DEPOT_RASTR(37),
+
 	// Término da criação do modelo
 	TERM_CRIA_MOD(7),
 	// Término da rastreabilidade

@@ -17,7 +17,7 @@ public class clUnifParams
 	public static int rebarb_maq_unif_min = 1;
 	public static int rebarb_maq_unif_max = 3;
 
-	public static int doc_unif_min = 1;
-	public static int doc_unif_max = 3;
+	public static int doc_unif_min = 1440;
+	public static int doc_unif_max = 4320;
 
 }

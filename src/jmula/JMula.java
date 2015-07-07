@@ -11,7 +11,7 @@ public class JMula
 	{
 		clSimul s = new clSimul();
 
-		s.simul(10, 120, System.currentTimeMillis());
+		s.simul(2, 5760000, System.currentTimeMillis());
 
 
 		System.out.println();
