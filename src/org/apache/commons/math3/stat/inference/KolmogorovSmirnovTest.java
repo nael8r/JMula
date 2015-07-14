@@ -17,17 +17,8 @@
 
 package org.apache.commons.math3.stat.inference;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Iterator;
-
 import org.apache.commons.math3.distribution.RealDistribution;
-import org.apache.commons.math3.exception.InsufficientDataException;
-import org.apache.commons.math3.exception.MathArithmeticException;
-import org.apache.commons.math3.exception.NullArgumentException;
-import org.apache.commons.math3.exception.NumberIsTooLargeException;
-import org.apache.commons.math3.exception.OutOfRangeException;
-import org.apache.commons.math3.exception.TooManyIterationsException;
+import org.apache.commons.math3.exception.*;
 import org.apache.commons.math3.exception.util.LocalizedFormats;
 import org.apache.commons.math3.fraction.BigFraction;
 import org.apache.commons.math3.fraction.BigFractionField;
@@ -42,8 +33,12 @@ import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.apache.commons.math3.util.MathArrays;
 
-import static org.apache.commons.math3.util.MathUtils.PI_SQUARED;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Iterator;
+
 import static org.apache.commons.math3.util.FastMath.PI;
+import static org.apache.commons.math3.util.MathUtils.PI_SQUARED;
 
 /**
  * Implementation of the <a href="http://en.wikipedia.org/wiki/Kolmogorov-Smirnov_test">

@@ -1,13 +1,26 @@
 package jmula.simul.entity;
 
 /**
- * Created by nael on 03/07/15.
+ * Autores:
+ *
+ * João Paulo Fernandes Cerqueira César
+ * Natanael Ramos
+ * Rodolfo Labiapari Mansur Guimarães
+ *
+ * CLasse que contem a entidade de cada pedido.
  */
 public class clEntidadePedido
 {
+	// identificador interno do pedido
 	private int ID;
+	// marca o tempo em que o pedido entrou em alguma fila, para calcular o tempo de espera de cada fila
 	private int marcaTempoEntrada;
 
+	/**
+	 * Cria uma nova entidade
+	 *
+	 * @param ID Identificador
+	 */
 	public clEntidadePedido (int ID)
 	{
 		this.ID = ID;
@@ -39,6 +52,5 @@ public class clEntidadePedido
 	public int hashCode()
 	{
 		return ID;
-
 	}
 }

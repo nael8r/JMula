@@ -16,10 +16,9 @@
  */
 package org.apache.commons.math3.geometry.euclidean.threed;
 
+import org.apache.commons.math3.util.FastMath;
 
 import java.io.Serializable;
-
-import org.apache.commons.math3.util.FastMath;
 
 /** This class provides conversions related to <a
  * href="http://mathworld.wolfram.com/SphericalCoordinates.html">spherical coordinates</a>.

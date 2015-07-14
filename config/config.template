@@ -1,0 +1,102 @@
+c Template do arquivo de entrada
+
+c Quantidade de replicações
+n <num>
+
+c Tempo máximo de simulação em minutos
+t <num>
+
+c Quantidade de pedidos a chegar
+p <num>
+
+c Quantidades de cada entidade
+
+funcSetorCompra <num>
+funcSetorExpedicao <num>
+funcSetorModel <num>
+funcSetorProducao <num>
+funcProdManual <num>
+funcSetorFinal <num>
+funcCheckoutResina <num>
+funcSetorQualidade <num>
+funcSetorContProd <num>
+funcSetorDoc <num>
+servTerc <num>
+
+c Duração das atividades
+
+norm_cheg_ped_med <num>
+norm_cheg_ped_sd <num>
+
+tri_proc_exp_ped_min <num>
+tri_proc_exp_ped_med <num>
+tri_proc_exp_ped_max <num>
+
+tri_ana_quimic_verif_mat_ex_min <num>
+tri_ana_quimic_verif_mat_ex_med <num>
+tri_ana_quimic_verif_mat_ex_max <num>
+
+unif_verif_data_mat_prim_min <num>
+unif_verif_data_mat_prim_max <num>
+
+norm_est_plan_proc_prod_med <num>
+norm_est_plan_proc_prod_sd <num>
+
+unif_verif_arq_mod_dep_min <num>
+unif_verif_arq_mod_dep_max <num>
+
+tri_cria_mod_min <num>
+tri_cria_mod_med <num>
+tri_cria_mod_max <num>
+
+tri_rastr_hist_mat_min <num>
+tri_rastr_hist_mat_med <num>
+tri_rastr_hist_mat_max <num>
+
+tri_coloc_info_peca_min <num>
+tri_coloc_info_peca_med <num>
+tri_coloc_info_peca_max <num>
+
+norm_pree_areia_med <num>
+norm_pree_areia_sd <num>
+
+cte_id_mat <num>
+
+cte_resin_s_cxt <num>
+
+cte_prod_maq <num>
+
+cte_prod_man <num>
+
+tri_resin_cxt_min <num>
+tri_resin_cxt_med <num>
+tri_resin_cxt_max <num>
+
+unif_rel_checkout_lim_acab_min <num>
+unif_rel_checkout_lim_acab_max <num>
+
+cte_limp_esp <num>
+
+norm_acab_med <num>
+norm_acab_sd <num>
+
+cte_esmeril <num>
+
+unif_rebarb_maq_min <num>
+unif_rebarb_maq_max <num>
+
+tri_rebarb_man_min <num>
+tri_rebarb_man_med <num>
+tri_rebarb_man_max <num>
+
+cte_ana_vis <num>
+
+tri_serv_ter_min <num>
+tri_serv_ter_med <num>
+tri_serv_ter_max <num>
+
+norm_receb_pint_med <num>
+norm_receb_pint_sd <num>
+
+unif_ger_doc_min <num>
+unif_ger_doc_max <num>

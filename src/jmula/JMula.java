@@ -1,17 +1,50 @@
 package jmula;
 
+import jmula.common.clEstatisticas;
 import jmula.simul.clSimul;
+import jmula.simul.parameters.clSimulParams;
+import org.apache.commons.math3.random.MersenneTwister;
+
+import static jmula.io.clEntrada.leArgumentos;
+import static jmula.io.clEntrada.leArquivoConfig;
+import static jmula.io.clSaida.geraArqSaida;
 
 /**
- * Created by nael on 29/06/15.
+ * Autores:
+ *
+ * João Paulo Fernandes Cerqueira César
+ * Natanael Ramos
+ * Rodolfo Labiapari Mansur Guimarães
+ *
+ * Classe principal.
  */
 public class JMula
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException
 	{
+		// lê os argumentos
+		leArgumentos(args);
+		// lê o arquivo de configuração
+		leArquivoConfig();
+
+		// objeto da simulação
 		clSimul s = new clSimul();
 
-		s.simul(2, 5760000, System.currentTimeMillis());
+		// estatísticas retornadas pela simulação
+		clEstatisticas est;
+
+		MersenneTwister rand = new MersenneTwister();
+
+		// executa todas as replicações
+		for(int i=0; i< clSimulParams.MAX_REPLICACOES; i++)
+		{
+			// semente atual
+			clSimulParams.SEMENTE_ATUAL = rand.nextLong();
+			// simula
+			s.simul(clSimulParams.SEMENTE_ATUAL);
+			// gera saída
+			geraArqSaida(s.getEst());
+		}
 
 
 		System.out.println();

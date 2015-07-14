@@ -16,13 +16,13 @@
  */
 package org.apache.commons.math3.geometry.partitioning;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.math3.geometry.Point;
 import org.apache.commons.math3.geometry.Space;
 import org.apache.commons.math3.geometry.partitioning.BSPTree.VanishingCutHandler;
 import org.apache.commons.math3.geometry.partitioning.Region.Location;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /** This class is a factory for {@link Region}.
 
