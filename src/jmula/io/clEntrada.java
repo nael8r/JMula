@@ -225,8 +225,8 @@ public class clEntrada
 				{
 					// quantidade de replicações
 					case "n":
-						if (in.hasNextInt())
-							clSimulParams.MAX_REPLICACOES = in.nextInt();
+						if (in.hasNextLong())
+							clSimulParams.MAX_REPLICACOES = in.nextLong();
 						else
 							err("n");
 						break;

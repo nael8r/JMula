@@ -45,8 +45,10 @@ public class clSaida
 
 				// escreve as colunas
 				writeOnOutput.print("TEMPO_FILA_TER\t");
+				writeOnOutput.print("QTD_PECAS_FILA\t");
 				writeOnOutput.print("TEMPO_SIMU\t");
 				writeOnOutput.print("SEMENTE\t");
+				writeOnOutput.print("QTD_PECAS");
 			}
 			// se o arquivo já existe
 			else
@@ -58,8 +60,10 @@ public class clSaida
 			writeOnOutput.println();
 			// escreve estatísticas
 			writeOnOutput.print(est.totTempoEspfilaAgTerceir + "\t");
+			writeOnOutput.print(est.totPedidoEmfilaAgTerceir + "\t");
 			writeOnOutput.print(est.tempoSimulacao + "\t");
 			writeOnOutput.print(clSimulParams.SEMENTE_ATUAL + "\t");
+			writeOnOutput.print(est.pedidosAtendidos);
 
 			writeOnOutput.close();
 

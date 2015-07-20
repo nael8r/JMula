@@ -12,7 +12,7 @@ package jmula.simul.parameters;
 public class clSimulParams
 {
 	// número máximo de replicações
-	public static int MAX_REPLICACOES;
+	public static long MAX_REPLICACOES;
 	// número máximo de pedidos que chegam
 	public static int MAX_PEDIDO;
 	// tempo máximo da simulação

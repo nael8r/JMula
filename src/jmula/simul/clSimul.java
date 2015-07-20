@@ -380,7 +380,8 @@ public class clSimul
 		if (funcSetorCompra == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgProc.addLast(ev.getPecaID());
+			if (!filaAgProc.contains(ev.getPecaID()))
+				filaAgProc.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -394,7 +395,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgProc.addLast(ev.getPecaID());
+			if (!filaAgProc.contains(ev.getPecaID()))
+				filaAgProc.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -412,6 +414,11 @@ public class clSimul
 				atualID = filaAgProc.removeFirst();
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgProc++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgProc += tmpTFila;
 
@@ -461,6 +468,11 @@ public class clSimul
 			atualID = filaAgProc.removeFirst();
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgProc++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgProc += tmpTFila;
 
@@ -507,7 +519,8 @@ public class clSimul
 		if (funcSetorExpedicao == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgAnalis.addLast(ev.getPecaID());
+			if (!filaAgAnalis.contains(ev.getPecaID()))
+				filaAgAnalis.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -525,7 +538,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgAnalis.addLast(ev.getPecaID());
+			if (!filaAgAnalis.contains(ev.getPecaID()))
+				filaAgAnalis.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -544,6 +558,11 @@ public class clSimul
 				atualID = filaAgAnalis.removeFirst();
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgAnalis++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgAnalis += tmpTFila;
 
@@ -574,8 +593,6 @@ public class clSimul
 				// adiciona o novo evento à fel
 				fel.add(novoEvento);
 
-				//// adiciona a atividade a respectiva fila
-				filaAgVerifDataMater.addLast(atualID);
 //				pedidosCriados.get(atualID).setMarcaTempoEntrada(pedidosCriados.get(atualID).getMarcaTempoEntrada() +
 //						(tmpTAtividade - clock) +
 //						tmpTFila);
@@ -599,6 +616,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgAnalis++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgAnalis += tmpTFila;
 
@@ -645,7 +667,8 @@ public class clSimul
 		if (funcSetorExpedicao == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgVerifDataMater.addLast(ev.getPecaID());
+			if (!filaAgVerifDataMater.contains(ev.getPecaID()))
+				filaAgVerifDataMater.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -662,7 +685,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgVerifDataMater.addLast(ev.getPecaID());
+			if (!filaAgVerifDataMater.contains(ev.getPecaID()))
+				filaAgVerifDataMater.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -681,6 +705,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgVerifDataMater++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgVerifDataMater += tmpTFila;
 
@@ -731,6 +760,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgVerifDataMater++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgVerifDataMater += tmpTFila;
 
@@ -777,7 +811,8 @@ public class clSimul
 		if (funcSetorExpedicao == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgPlanejamento.addLast(ev.getPecaID());
+			if (!filaAgPlanejamento.contains(ev.getPecaID()))
+				filaAgPlanejamento.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -794,7 +829,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgPlanejamento.addLast(ev.getPecaID());
+			if (!filaAgPlanejamento.contains(ev.getPecaID()))
+				filaAgPlanejamento.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -814,6 +850,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgPlanejamento++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgPlanejamento += tmpTFila;
 
@@ -864,6 +905,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgPlanejamento++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgPlanejamento += tmpTFila;
 
@@ -910,7 +956,8 @@ public class clSimul
 		if (funcSetorModel == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgVerificacao.addLast(ev.getPecaID());
+			if (!filaAgVerificacao.contains(ev.getPecaID()))
+				filaAgVerificacao.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -926,7 +973,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgVerificacao.addLast(ev.getPecaID());
+			if (!filaAgVerificacao.contains(ev.getPecaID()))
+				filaAgVerificacao.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -946,6 +994,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgVerificacao++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgVerificacao += tmpTFila;
 
@@ -1023,6 +1076,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgVerificacao++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgVerificacao += tmpTFila;
 
@@ -1096,7 +1154,8 @@ public class clSimul
 		if (funcSetorModel == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgMoldPronto.addLast(ev.getPecaID());
+			if (!filaAgMoldPronto.contains(ev.getPecaID()))
+				filaAgMoldPronto.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1114,7 +1173,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgMoldPronto.addLast(ev.getPecaID());
+			if (!filaAgMoldPronto.contains(ev.getPecaID()))
+				filaAgMoldPronto.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1133,6 +1193,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgMoldPronto++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgMoldPronto += tmpTFila;
 
@@ -1183,6 +1248,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgMoldPronto++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgMoldPronto += tmpTFila;
 
@@ -1229,7 +1299,8 @@ public class clSimul
 		if (funcSetorModel == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgRastr.addLast(ev.getPecaID());
+			if (!filaAgRastr.contains(ev.getPecaID()))
+				filaAgRastr.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1255,7 +1326,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgRastr.addLast(ev.getPecaID());
+			if (!filaAgRastr.contains(ev.getPecaID()))
+				filaAgRastr.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1274,6 +1346,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgRastr++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgRastr += tmpTFila;
 
@@ -1324,6 +1401,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgRastr++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgRastr += tmpTFila;
 
@@ -1370,7 +1452,8 @@ public class clSimul
 		if (funcSetorModel == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgColeta.addLast(ev.getPecaID());
+			if (!filaAgColeta.contains(ev.getPecaID()))
+				filaAgColeta.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1388,7 +1471,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgColeta.addLast(ev.getPecaID());
+			if (!filaAgColeta.contains(ev.getPecaID()))
+				filaAgColeta.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1407,6 +1491,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgColeta++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgColeta += tmpTFila;
 
@@ -1458,6 +1547,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgColeta++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgColeta += tmpTFila;
 
@@ -1504,7 +1598,8 @@ public class clSimul
 		if (funcSetorProducao == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgPreeAreia.addLast(ev.getPecaID());
+			if (!filaAgPreeAreia.contains(ev.getPecaID()))
+				filaAgPreeAreia.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1521,7 +1616,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgPreeAreia.addLast(ev.getPecaID());
+			if (!filaAgPreeAreia.contains(ev.getPecaID()))
+				filaAgPreeAreia.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1540,6 +1636,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgPreeAreia++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgPreeAreia += tmpTFila;
 
@@ -1590,6 +1691,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgPreeAreia++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgPreeAreia += tmpTFila;
 
@@ -1636,7 +1742,8 @@ public class clSimul
 		if (funcSetorProducao == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgIdentif.addLast(ev.getPecaID());
+			if (!filaAgIdentif.contains(ev.getPecaID()))
+				filaAgIdentif.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1653,7 +1760,8 @@ public class clSimul
 		{
 			double prob;
 			// adiciona a atividade a respectiva fila
-			filaAgIdentif.addLast(ev.getPecaID());
+			if (!filaAgIdentif.contains(ev.getPecaID()))
+				filaAgIdentif.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1674,6 +1782,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgIdentif++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgIdentif += tmpTFila;
 
@@ -1796,6 +1909,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgIdentif++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgIdentif += tmpTFila;
 
@@ -1912,7 +2030,8 @@ public class clSimul
 		if (funcSetorProducao == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgCaixote.addLast(ev.getPecaID());
+			if (!filaAgCaixote.contains(ev.getPecaID()))
+				filaAgCaixote.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1930,7 +2049,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgCaixote.addLast(ev.getPecaID());
+			if (!filaAgCaixote.contains(ev.getPecaID()))
+				filaAgCaixote.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -1949,6 +2069,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgCaixote++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgCaixote += tmpTFila;
 
@@ -2000,6 +2125,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgCaixote++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgCaixote += tmpTFila;
 
@@ -2046,7 +2176,8 @@ public class clSimul
 		if (funcSetorProducao == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgSCaixote.addLast(ev.getPecaID());
+			if (!filaAgSCaixote.contains(ev.getPecaID()))
+				filaAgSCaixote.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2063,7 +2194,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgSCaixote.addLast(ev.getPecaID());
+			if (!filaAgSCaixote.contains(ev.getPecaID()))
+				filaAgSCaixote.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2082,6 +2214,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgSCaixote++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgSCaixote += tmpTFila;
 
@@ -2132,6 +2269,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgSCaixote++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgSCaixote += tmpTFila;
 
@@ -2178,7 +2320,8 @@ public class clSimul
 		if (funcSetorProducao == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgMaquina.addLast(ev.getPecaID());
+			if (!filaAgMaquina.contains(ev.getPecaID()))
+				filaAgMaquina.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2195,7 +2338,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgMaquina.addLast(ev.getPecaID());
+			if (!filaAgMaquina.contains(ev.getPecaID()))
+				filaAgMaquina.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2214,6 +2358,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgMaquina++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgMaquina += tmpTFila;
 
@@ -2264,6 +2413,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgMaquina++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgMaquina += tmpTFila;
 
@@ -2309,7 +2463,8 @@ public class clSimul
 		if (funcProdManual == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgManual.addLast(ev.getPecaID());
+			if (!filaAgManual.contains(ev.getPecaID()))
+				filaAgManual.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2326,7 +2481,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgManual.addLast(ev.getPecaID());
+			if (!filaAgManual.contains(ev.getPecaID()))
+				filaAgManual.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2345,6 +2501,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgManual++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgManual += tmpTFila;
 
@@ -2395,6 +2556,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgManual++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgManual += tmpTFila;
 
@@ -2440,7 +2606,8 @@ public class clSimul
 		if (funcSetorFinal == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgCheckoutLimpAcab.addLast(ev.getPecaID());
+			if (!filaAgCheckoutLimpAcab.contains(ev.getPecaID()))
+				filaAgCheckoutLimpAcab.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2474,7 +2641,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgCheckoutLimpAcab.addLast(ev.getPecaID());
+			if (!filaAgCheckoutLimpAcab.contains(ev.getPecaID()))
+				filaAgCheckoutLimpAcab.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2493,6 +2661,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgCheckoutLimpAcab++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgCheckoutLimpAcab += tmpTFila;
 
@@ -2568,6 +2741,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgCheckoutLimpAcab++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgCheckoutLimpAcab += tmpTFila;
 
@@ -2639,7 +2817,8 @@ public class clSimul
 		if (funcCheckoutResina == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgLimpEsp.addLast(ev.getPecaID());
+			if (!filaAgLimpEsp.contains(ev.getPecaID()))
+				filaAgLimpEsp.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2655,7 +2834,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgLimpEsp.addLast(ev.getPecaID());
+			if (!filaAgLimpEsp.contains(ev.getPecaID()))
+				filaAgLimpEsp.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2674,6 +2854,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgLimpEsp++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgLimpEsp += tmpTFila;
 
@@ -2724,6 +2909,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgLimpEsp++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgLimpEsp += tmpTFila;
 
@@ -2771,7 +2961,8 @@ public class clSimul
 		if (funcSetorFinal == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgAcabamento.addLast(ev.getPecaID());
+			if (!filaAgAcabamento.contains(ev.getPecaID()))
+				filaAgAcabamento.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2797,7 +2988,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgAcabamento.addLast(ev.getPecaID());
+			if (!filaAgAcabamento.contains(ev.getPecaID()))
+				filaAgAcabamento.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2816,6 +3008,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgAcabamento++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgAcabamento += tmpTFila;
 
@@ -2865,6 +3062,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgAcabamento++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgAcabamento += tmpTFila;
 
@@ -2910,7 +3112,8 @@ public class clSimul
 		if (funcSetorFinal == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgEsmeril.addLast(ev.getPecaID());
+			if (!filaAgEsmeril.contains(ev.getPecaID()))
+				filaAgEsmeril.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2930,7 +3133,8 @@ public class clSimul
 			double prob;
 
 			// adiciona a atividade a respectiva fila
-			filaAgEsmeril.addLast(ev.getPecaID());
+			if (!filaAgEsmeril.contains(ev.getPecaID()))
+				filaAgEsmeril.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -2951,6 +3155,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgEsmeril++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgEsmeril += tmpTFila;
 
@@ -3029,6 +3238,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgEsmeril++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgEsmeril += tmpTFila;
 
@@ -3099,7 +3313,8 @@ public class clSimul
 		if (funcSetorFinal == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgRebarbMaq.addLast(ev.getPecaID());
+			if (!filaAgRebarbMaq.contains(ev.getPecaID()))
+				filaAgRebarbMaq.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3116,7 +3331,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgRebarbMaq.addLast(ev.getPecaID());
+			if (!filaAgRebarbMaq.contains(ev.getPecaID()))
+				filaAgRebarbMaq.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3135,6 +3351,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgRebarbMaq++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgRebarbMaq += tmpTFila;
 
@@ -3185,6 +3406,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgRebarbMaq++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgRebarbMaq += tmpTFila;
 
@@ -3231,7 +3457,8 @@ public class clSimul
 		if (funcSetorFinal == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgRebarbMan.addLast(ev.getPecaID());
+			if (!filaAgRebarbMan.contains(ev.getPecaID()))
+				filaAgRebarbMan.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3248,7 +3475,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgRebarbMan.addLast(ev.getPecaID());
+			if (!filaAgRebarbMan.contains(ev.getPecaID()))
+				filaAgRebarbMan.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3267,6 +3495,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgRebarbMan++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgRebarbMan += tmpTFila;
 
@@ -3317,6 +3550,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgRebarbMan++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgRebarbMan += tmpTFila;
 
@@ -3363,7 +3601,8 @@ public class clSimul
 		if (funcSetorQualidade == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgAnalisVisual.addLast(ev.getPecaID());
+			if (!filaAgAnalisVisual.contains(ev.getPecaID()))
+				filaAgAnalisVisual.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3390,7 +3629,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgAnalisVisual.addLast(ev.getPecaID());
+			if (!filaAgAnalisVisual.contains(ev.getPecaID()))
+				filaAgAnalisVisual.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3409,6 +3649,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgAnalisVisual++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgAnalisVisual += tmpTFila;
 
@@ -3459,6 +3704,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgAnalisVisual++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgAnalisVisual += tmpTFila;
 
@@ -3503,8 +3753,9 @@ public class clSimul
 		// Se o recurso não está disponível
 		if (servTerc == 0)
 		{
-			// adiciona a atividade a respectiva fila
-			filaAgTerceir.addLast(ev.getPecaID());
+
+			if (!filaAgTerceir.contains(ev.getPecaID()))
+				filaAgTerceir.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3522,8 +3773,8 @@ public class clSimul
 		{
 			double prob;
 
-			// adiciona a atividade a respectiva fila
-			filaAgTerceir.addLast(ev.getPecaID());
+			if (!filaAgTerceir.contains(ev.getPecaID()))
+				filaAgTerceir.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3542,6 +3793,11 @@ public class clSimul
 				atualID = filaAgTerceir.removeFirst();
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgTerceir++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgTerceir += tmpTFila;
 
@@ -3617,10 +3873,14 @@ public class clSimul
 			prob = rand.nextDouble();
 			// pega a primeira atividade que está na fila
 			atualID = filaAgTerceir.removeFirst();
-			// incrementa o clock de acordo com o término do evento reconhecido
-			clock += ev.getTempoTermino() - clock;
+
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgTerceir++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgTerceir += tmpTFila;
 
@@ -3692,7 +3952,8 @@ public class clSimul
 		if (funcSetorContProd == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgPint.addLast(ev.getPecaID());
+			if (!filaAgPint.contains(ev.getPecaID()))
+				filaAgPint.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3708,7 +3969,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgPint.addLast(ev.getPecaID());
+			if (!filaAgPint.contains(ev.getPecaID()))
+				filaAgPint.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3727,6 +3989,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgPint++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgPint += tmpTFila;
 
@@ -3777,6 +4044,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgPint++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgPint += tmpTFila;
 
@@ -3822,7 +4094,8 @@ public class clSimul
 		if (funcSetorDoc == 0)
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgDoc.addLast(ev.getPecaID());
+			if (!filaAgDoc.contains(ev.getPecaID()))
+				filaAgDoc.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3848,7 +4121,8 @@ public class clSimul
 		else
 		{
 			// adiciona a atividade a respectiva fila
-			filaAgDoc.addLast(ev.getPecaID());
+			if (!filaAgDoc.contains(ev.getPecaID()))
+				filaAgDoc.addLast(ev.getPecaID());
 
 			// para a contagem de tempo, para não contar as mensagens de debug no tempo de simulação
 			paraCronometragem();
@@ -3867,6 +4141,11 @@ public class clSimul
 
 				// calcula o tempo de espera da respectiva atividade na respectiva fila
 				tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+				// só considera que a atividade passou na fila se tiver tempo de espera > 0
+				if (tmpTFila != 0)
+					getEst().totPedidoEmfilaAgDoc++;
+
 				// calcula o acumulado de tempo de espera da respectiva fila
 				getEst().totTempoEspfilaAgDoc += tmpTFila;
 
@@ -3918,6 +4197,11 @@ public class clSimul
 
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
+
+			// só considera que a atividade passou na fila se tiver tempo de espera > 0
+			if (tmpTFila != 0)
+				getEst().totPedidoEmfilaAgDoc++;
+
 			// calcula o acumulado de tempo de espera da respectiva fila
 			getEst().totTempoEspfilaAgDoc += tmpTFila;
 
@@ -3999,7 +4283,7 @@ public class clSimul
 	 * Depois do término da simulação, calcula o tempo em fila para cada atividade restante em alguma fila.
 	 *
 	 * @param filaNome Nome da fila
-	 * @param fila fila
+	 * @param fila     fila
 	 * @throws NoSuchFieldException
 	 * @throws IllegalAccessException
 	 */
@@ -4007,7 +4291,30 @@ public class clSimul
 	{
 		// pega o padrão dos campos de tempo em fila: totTempoEsp+<nome-fila>
 		String tempo = "totTempoEsp" + filaNome;
-		Field campo;
+		Field campoTotTempo = null;
+
+		// utiliza dos recursos de Java Reflection para pegar o campo na classe clEstatisticas com o respectivo
+		// nome totTempoEsp+<nome-fila>
+		campoTotTempo = clEstatisticas.class.getDeclaredField(tempo);
+
+		// quantidade de pedidos que passaram pela respectiva fila
+		String pedidosEmFila = "totPedidoEm" + filaNome;
+		Field campoPedidosEmFila;
+
+		campoPedidosEmFila = clEstatisticas.class.getDeclaredField(pedidosEmFila);
+
+		// média de espera dos pedidos na respectiva fila
+		String mediaEsperaFila = "mediaEspera" + filaNome;
+		Field campoMediaEspera;
+
+		// campo do cálculo da média dessa fila
+		campoMediaEspera = clEstatisticas.class.getDeclaredField(mediaEsperaFila);
+
+		// TODO consertar isso
+		if (fila.size() > clSimulParams.MAX_PEDIDO || (Integer) campoPedidosEmFila.get(getEst()) > clSimulParams.MAX_PEDIDO)
+		{
+			System.out.println("fila errada:" + filaNome);
+		}
 
 		// enquanto a respectiva fila não estiver vazia
 		while (!fila.isEmpty())
@@ -4018,15 +4325,28 @@ public class clSimul
 			// calcula o tempo de espera da respectiva atividade na respectiva fila
 			tmpTFila = clock - pedidosCriados.get(atualID).getMarcaTempoEntrada();
 
-			// utiliza dos recursos de Java Reflection para pegar o campo na classe clEstatisticas com o respectivo
-			// nome totTempoEsp+<nome-fila>
-			campo = clEstatisticas.class.getDeclaredField(tempo);
+			if (tmpTFila != 0)
+				campoPedidosEmFila.setInt(getEst(), (Integer) campoPedidosEmFila.get(getEst()) + 1);
 
 			// define o valor do campo encontrado
 			// getEst() -> em qual classe o campo deve ser definido
 			// campo.get(getEst()) + tmpTFila -> retorna o valor do campo e incrementa com o novo valor calculado
-			campo.setInt(getEst(), (Integer) campo.get(getEst()) + tmpTFila);
+			campoTotTempo.setInt(getEst(), (Integer) campoTotTempo.get(getEst()) + tmpTFila);
 		}
+
+		//se teve pedidos em fila
+		if ((Integer) campoPedidosEmFila.get(getEst()) != 0)
+		{
+			// calcula a média e atribui ao campo
+			campoMediaEspera.setDouble(getEst(),
+					(Integer) campoTotTempo.get(getEst()) / (Integer) campoPedidosEmFila.get(getEst()));
+		}
+		else
+		{
+			// se não teve então a média de espera é 0
+			campoMediaEspera.setDouble(getEst(), 0.0);
+		}
+
 	}
 
 	/**
@@ -4195,9 +4515,6 @@ public class clSimul
 		// evento auxiliar
 		clEventoBase ev;
 
-		dbg(enumTipoDebug.INFO, "===================================================================================");
-		dbg(enumTipoDebug.INFO, "Início da Simulação de uma replicação...");
-
 		// inicialização da simulação
 		init(seed);
 
@@ -4207,7 +4524,7 @@ public class clSimul
 		// gera as entidades
 		nascedouro();
 
-		// enquanto não atinge o clock ou fel vazia
+		// enquanto não atinge o clock e fel vazia
 		while (clock <= clSimulParams.MAX_TEMPO && !fel.isEmpty())
 		{
 			// tira o primeiro evento da fel
@@ -4410,11 +4727,8 @@ public class clSimul
 		paraCronometragem();
 
 		// imprime as estatísticas
-		if(clDebug.dbgInfo)
+		if (clDebug.dbgInfo)
 			getEst().imprimeEstatisticas();
-
-		dbg(enumTipoDebug.INFO, "Término da Simulação de uma replicação...");
-		dbg(enumTipoDebug.INFO, "===============================================================================");
 	}
 
 	public clEstatisticas getEst()
