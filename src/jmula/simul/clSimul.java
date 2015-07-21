@@ -4310,12 +4310,6 @@ public class clSimul
 		// campo do cálculo da média dessa fila
 		campoMediaEspera = clEstatisticas.class.getDeclaredField(mediaEsperaFila);
 
-		// TODO consertar isso
-		if (fila.size() > clSimulParams.MAX_PEDIDO || (Integer) campoPedidosEmFila.get(getEst()) > clSimulParams.MAX_PEDIDO)
-		{
-			System.out.println("fila errada:" + filaNome);
-		}
-
 		// enquanto a respectiva fila não estiver vazia
 		while (!fila.isEmpty())
 		{
