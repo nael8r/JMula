@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jmula" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.tox/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module JMula -->
+  
+  <dirname property="module.jmula.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.jmula" value="-encoding UTF-8 -source 8 ${compiler.args}"/>
+  
+  <property name="jmula.output.dir" value="${module.jmula.basedir}/out/production/JMula"/>
+  <property name="jmula.testoutput.dir" value="${module.jmula.basedir}/out/test/JMula"/>
+  
+  <path id="jmula.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="jmula.module.production.classpath"/>
+  
+  <path id="jmula.runtime.production.module.classpath">
+    <pathelement location="${jmula.output.dir}"/>
+  </path>
+  
+  <path id="jmula.module.classpath">
+    <pathelement location="${jmula.output.dir}"/>
+  </path>
+  
+  <path id="jmula.runtime.module.classpath">
+    <pathelement location="${jmula.testoutput.dir}"/>
+    <pathelement location="${jmula.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.jmula">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.jmula">
+    <patternset refid="excluded.from.module.jmula"/>
+  </patternset>
+  
+  <path id="jmula.module.sourcepath">
+    <dirset dir="${module.jmula.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.jmula" depends="compile.module.jmula.production,compile.module.jmula.tests" description="Compile module JMula"/>
+  
+  <target name="compile.module.jmula.production" description="Compile module JMula; production classes">
+    <mkdir dir="${jmula.output.dir}"/>
+    <javac destdir="${jmula.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.jmula}"/>
+      <bootclasspath refid="jmula.module.bootclasspath"/>
+      <classpath refid="jmula.module.production.classpath"/>
+      <src refid="jmula.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.jmula"/>
+    </javac>
+    
+    <copy todir="${jmula.output.dir}">
+      <fileset dir="${module.jmula.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.jmula.tests" depends="compile.module.jmula.production" description="compile module JMula; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.jmula" description="cleanup module">
+    <delete dir="${jmula.output.dir}"/>
+    <delete dir="${jmula.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.jmula" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.jmula" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.jmula" value="${basedir}/out/artifacts/JMula"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.JMula.jar" value="${artifacts.temp.dir}/JMula.jar"/>
+  </target>
+  
+  <target name="artifact.jmula" depends="init.artifacts" description="Build &#39;JMula&#39; artifact">
+    <property name="artifact.temp.output.jmula" value="${artifacts.temp.dir}/JMula"/>
+    <mkdir dir="${artifact.temp.output.jmula}"/>
+    <jar destfile="${temp.jar.path.JMula.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain"/>
+    <copy file="${temp.jar.path.JMula.jar}" tofile="${artifact.temp.output.jmula}/JMula.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.jmula" description="Build all artifacts">
+    <mkdir dir="${artifact.output.jmula}"/>
+    <copy todir="${artifact.output.jmula}">
+      <fileset dir="${artifact.temp.output.jmula}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
