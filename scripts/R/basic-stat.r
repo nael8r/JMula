@@ -1,3 +1,8 @@
+# Autores
+# João Paulo Fernandes Cerqueira César
+# Natanael Ramos
+# Rodolfo Labiapari Mansur Guimarães
+
 # pegar argumentos da linha de comando
 args <- commandArgs(TRUE);
 

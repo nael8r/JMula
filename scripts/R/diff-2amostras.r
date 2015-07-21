@@ -1,3 +1,8 @@
+# Autores
+# João Paulo Fernandes Cerqueira César
+# Natanael Ramos
+# Rodolfo Labiapari Mansur Guimarães
+
 #
 # Calcula intervalo de confianca para diferenca de duas amostras com mesmo
 # numero de observacoes

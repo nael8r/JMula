@@ -1,11 +1,16 @@
+# Autores
+# João Paulo Fernandes Cerqueira César
+# Natanael Ramos
+# Rodolfo Labiapari Mansur Guimarães
+
 # Script para análise de dados de resultados da simulação
 
-# Calcula o intervalo de confian?a para um ?nico indicador de desempenho da simula??o
+# Calcula o intervalo de confian?a para um inico indicador de desempenho da simulação
 IntervaloConfianca = function(amostra, alpha, precisao)
 {
   boxplot(amostra);
   
-  # calculando a m?dia e desvio padr?o
+  # calculando a média e desvio padrão
   media = mean(amostra);
   desvio = sd(amostra);
 
