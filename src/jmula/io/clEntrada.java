@@ -485,10 +485,11 @@ public class clEntrada
 		else
 		{
 			System.err.println("Sintaxe incorreta! Utilizar:");
-			System.err.println("java jmula.JMula in=<arquivo-configuração> out=<arquivo-saida> degub=<opções>");
+			System.err.println("java jmula.JMula in=<arquivo-configuração> out=<nome-arquivo-saida> degub=<opções>");
 			System.err.println("Opções de debug (separadas por vírgula, sem espaço):");
 			System.err.println("\tentidade: mostra informações das entidades" +
 					"\n\tfila: mostra informações das filas" +
+					"\n\tinfo: informações úteis, estatísticas" +
 					"\n\tevento: mostra informações dos eventos" +
 					"\n\ttudo: mostra todas as informações");
 
