@@ -141,29 +141,5 @@
   
   <target name="build.modules" depends="init, clean, compile.module.jmula" description="build all modules"/>
   
-  <target name="init.artifacts">
-    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-    <property name="artifact.output.jmula" value="${basedir}/out/artifacts/JMula"/>
-    <mkdir dir="${artifacts.temp.dir}"/>
-    <property name="temp.jar.path.JMula.jar" value="${artifacts.temp.dir}/JMula.jar"/>
-  </target>
-  
-  <target name="artifact.jmula" depends="init.artifacts" description="Build &#39;JMula&#39; artifact">
-    <property name="artifact.temp.output.jmula" value="${artifacts.temp.dir}/JMula"/>
-    <mkdir dir="${artifact.temp.output.jmula}"/>
-    <jar destfile="${temp.jar.path.JMula.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain"/>
-    <copy file="${temp.jar.path.JMula.jar}" tofile="${artifact.temp.output.jmula}/JMula.jar"/>
-  </target>
-  
-  <target name="build.all.artifacts" depends="artifact.jmula" description="Build all artifacts">
-    <mkdir dir="${artifact.output.jmula}"/>
-    <copy todir="${artifact.output.jmula}">
-      <fileset dir="${artifact.temp.output.jmula}"/>
-    </copy>
-    
-    <!-- Delete temporary files -->
-    <delete dir="${artifacts.temp.dir}"/>
-  </target>
-  
-  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+  <target name="all" depends="build.modules" description="build all"/>
 </project>
